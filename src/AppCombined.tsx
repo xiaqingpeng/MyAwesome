@@ -1,9 +1,11 @@
 /**
- * Sample React Native App with React Navigation
- * Bottom Tabs Navigator + Stack Navigator
- * https://github.com/facebook/react-native
- *
- * @format
+ * 组合导航示例
+ * Bottom Tabs + Material Top Tabs + Stack Navigator
+ * 
+ * 这个示例展示了如何将三种导航器组合使用：
+ * - Bottom Tabs: 主要功能切换
+ * - Top Tabs: 内容分类浏览
+ * - Stack: 页面层级导航
  */
 
 import React from 'react';
@@ -12,13 +14,14 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './src/screens/HomeScreen';
-import ProfileScreen from './src/screens/ProfileScreen';
-import SettingsScreen from './src/screens/SettingsScreen';
-import { TabBarIconSvg } from './src/components/TabBarIconSvg';
-import type { HomeStackParamList, RootTabParamList } from './src/navigation/types';
+import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import SettingsScreen from './screens/SettingsScreen';
+import { TopTabsNavigator } from './navigation/TopTabsNavigator';
+import { TabBarIconSvg } from './components/TabBarIconSvg';
+import type { HomeStackParamList } from './navigation/types';
 
-// 创建 Stack Navigator 用于 Home 标签
+// Stack Navigator for Home tab
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen() {
@@ -38,10 +41,10 @@ function HomeStackScreen() {
   );
 }
 
-// 创建 Bottom Tab Navigator
-const Tab = createBottomTabNavigator<RootTabParamList>();
+// Bottom Tab Navigator
+const Tab = createBottomTabNavigator();
 
-function App() {
+function AppCombined() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
@@ -61,7 +64,18 @@ function App() {
             options={{
               title: 'Home',
               tabBarIcon: ({ color, size, focused }) => (
-                <TabBarIcon icon="🏠" color={color} size={size} focused={focused} />
+                <TabBarIconSvg name="home" color={color} size={size} focused={focused} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Discover"
+            component={TopTabsNavigator}
+            options={{
+              title: 'Discover',
+              headerShown: false,
+              tabBarIcon: ({ color, size, focused }) => (
+                <TabBarIconSvg name="discover" color={color} size={size} focused={focused} />
               ),
             }}
           />
@@ -72,7 +86,7 @@ function App() {
               title: 'Settings',
               headerShown: true,
               tabBarIcon: ({ color, size, focused }) => (
-                <TabBarIcon icon="⚙️" color={color} size={size} focused={focused} />
+                <TabBarIconSvg name="settings" color={color} size={size} focused={focused} />
               ),
             }}
           />
@@ -82,4 +96,4 @@ function App() {
   );
 }
 
-export default App;
+export default AppCombined;

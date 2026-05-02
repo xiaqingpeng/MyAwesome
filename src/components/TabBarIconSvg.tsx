@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, Circle, Ellipse } from 'react-native-svg';
+import Svg, { Path, Circle, Line } from 'react-native-svg';
 
 interface TabBarIconProps {
   name: 'home' | 'settings' | 'discover' | 'network';
@@ -27,33 +27,85 @@ const iconPaths = {
 };
 
 export function TabBarIconSvg({ name, color, size = 24, focused }: TabBarIconProps) {
-  // Network 图标使用自定义渲染
+  // Network 图标使用自定义渲染 - 网络连接节点图标
   if (name === 'network') {
     return (
       <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
         {focused ? (
-          // Filled version - Cloud with data
+          // Filled version - Network nodes with connections
           <>
-            <Path
-              d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17l1.46 1.46C10.21 6.23 11.08 6 12 6c3.04 0 5.5 2.46 5.5 5.5v.5H19c1.66 0 3 1.34 3 3s-1.34 3-3 3H6c-2.21 0-4-1.79-4-4s1.79-4 4-4h.5v-.5c0-.34.03-.67.08-1L4.12 6.12C2.79 7.57 2 9.69 2 12c0 3.31 2.69 6 6 6h11c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"
-              fill={color}
-            />
-            <Circle cx="8" cy="14" r="1" fill={color} />
-            <Circle cx="12" cy="14" r="1" fill={color} />
-            <Circle cx="16" cy="14" r="1" fill={color} />
+            {/* Center node */}
+            <Circle cx="12" cy="12" r="2.5" fill={color} />
+            
+            {/* Top node */}
+            <Circle cx="12" cy="4" r="2" fill={color} />
+            <Line x1="12" y1="6" x2="12" y2="9.5" stroke={color} strokeWidth="2" />
+            
+            {/* Bottom node */}
+            <Circle cx="12" cy="20" r="2" fill={color} />
+            <Line x1="12" y1="18" x2="12" y2="14.5" stroke={color} strokeWidth="2" />
+            
+            {/* Left node */}
+            <Circle cx="4" cy="12" r="2" fill={color} />
+            <Line x1="6" y1="12" x2="9.5" y2="12" stroke={color} strokeWidth="2" />
+            
+            {/* Right node */}
+            <Circle cx="20" cy="12" r="2" fill={color} />
+            <Line x1="18" y1="12" x2="14.5" y2="12" stroke={color} strokeWidth="2" />
+            
+            {/* Top-left node */}
+            <Circle cx="6" cy="6" r="1.5" fill={color} />
+            <Line x1="7.2" y1="7.2" x2="10.3" y2="10.3" stroke={color} strokeWidth="1.5" />
+            
+            {/* Top-right node */}
+            <Circle cx="18" cy="6" r="1.5" fill={color} />
+            <Line x1="16.8" y1="7.2" x2="13.7" y2="10.3" stroke={color} strokeWidth="1.5" />
+            
+            {/* Bottom-left node */}
+            <Circle cx="6" cy="18" r="1.5" fill={color} />
+            <Line x1="7.2" y1="16.8" x2="10.3" y2="13.7" stroke={color} strokeWidth="1.5" />
+            
+            {/* Bottom-right node */}
+            <Circle cx="18" cy="18" r="1.5" fill={color} />
+            <Line x1="16.8" y1="16.8" x2="13.7" y2="13.7" stroke={color} strokeWidth="1.5" />
           </>
         ) : (
-          // Outline version - Cloud with data
+          // Outline version - Network nodes with connections
           <>
-            <Path
-              d="M19.35 10.04C18.67 6.59 15.64 4 12 4c-1.48 0-2.85.43-4.01 1.17l1.46 1.46C10.21 6.23 11.08 6 12 6c3.04 0 5.5 2.46 5.5 5.5v.5H19c1.66 0 3 1.34 3 3s-1.34 3-3 3H6c-2.21 0-4-1.79-4-4s1.79-4 4-4h.5v-.5c0-.34.03-.67.08-1L4.12 6.12C2.79 7.57 2 9.69 2 12c0 3.31 2.69 6 6 6h11c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"
-              stroke={color}
-              strokeWidth="1.5"
-              fill="none"
-            />
-            <Circle cx="8" cy="14" r="1" fill={color} />
-            <Circle cx="12" cy="14" r="1" fill={color} />
-            <Circle cx="16" cy="14" r="1" fill={color} />
+            {/* Center node */}
+            <Circle cx="12" cy="12" r="2.5" stroke={color} strokeWidth="1.5" fill="none" />
+            
+            {/* Top node */}
+            <Circle cx="12" cy="4" r="2" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="12" y1="6" x2="12" y2="9.5" stroke={color} strokeWidth="1.5" />
+            
+            {/* Bottom node */}
+            <Circle cx="12" cy="20" r="2" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="12" y1="18" x2="12" y2="14.5" stroke={color} strokeWidth="1.5" />
+            
+            {/* Left node */}
+            <Circle cx="4" cy="12" r="2" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="6" y1="12" x2="9.5" y2="12" stroke={color} strokeWidth="1.5" />
+            
+            {/* Right node */}
+            <Circle cx="20" cy="12" r="2" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="18" y1="12" x2="14.5" y2="12" stroke={color} strokeWidth="1.5" />
+            
+            {/* Top-left node */}
+            <Circle cx="6" cy="6" r="1.5" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="7.2" y1="7.2" x2="10.3" y2="10.3" stroke={color} strokeWidth="1" />
+            
+            {/* Top-right node */}
+            <Circle cx="18" cy="6" r="1.5" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="16.8" y1="7.2" x2="13.7" y2="10.3" stroke={color} strokeWidth="1" />
+            
+            {/* Bottom-left node */}
+            <Circle cx="6" cy="18" r="1.5" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="7.2" y1="16.8" x2="10.3" y2="13.7" stroke={color} strokeWidth="1" />
+            
+            {/* Bottom-right node */}
+            <Circle cx="18" cy="18" r="1.5" stroke={color} strokeWidth="1.5" fill="none" />
+            <Line x1="16.8" y1="16.8" x2="13.7" y2="13.7" stroke={color} strokeWidth="1" />
           </>
         )}
       </Svg>

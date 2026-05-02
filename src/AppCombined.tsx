@@ -20,6 +20,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import NetworkDemoScreen from './screens/NetworkDemoScreen';
 import { TopTabsNavigator } from './navigation/TopTabsNavigator';
+import { DrawerNavigatorExample } from './navigation/DrawerNavigatorExample';
 import { TabBarIconSvg } from './components/TabBarIconSvg';
 import type { HomeStackParamList } from './navigation/types';
 
@@ -40,6 +41,29 @@ function HomeStackScreen() {
         options={{ title: 'Profile' }}
       />
     </HomeStack.Navigator>
+  );
+}
+
+// Stack Navigator for Settings tab (to include Drawer example)
+const SettingsStack = createNativeStackNavigator();
+
+function SettingsStackScreen() {
+  return (
+    <SettingsStack.Navigator>
+      <SettingsStack.Screen
+        name="SettingsMain"
+        component={SettingsScreen}
+        options={{ title: 'Settings' }}
+      />
+      <SettingsStack.Screen
+        name="DrawerExample"
+        component={DrawerNavigatorExample}
+        options={{ 
+          headerShown: false,
+          title: 'Drawer Navigator 示例',
+        }}
+      />
+    </SettingsStack.Navigator>
   );
 }
 
@@ -96,10 +120,10 @@ function AppCombined() {
           />
           <Tab.Screen
             name="Settings"
-            component={SettingsScreen}
+            component={SettingsStackScreen}
             options={{
               title: 'Settings',
-              headerShown: true,
+              headerShown: false,
               tabBarIcon: ({ color, size, focused }) => (
                 <TabBarIconSvg name="settings" color={color} size={size} focused={focused} />
               ),

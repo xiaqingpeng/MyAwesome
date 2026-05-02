@@ -2,6 +2,7 @@
  * @format
  */
 
+import 'react-native-gesture-handler';
 import { AppRegistry } from 'react-native';
 
 // 选择一个导航示例（取消注释你想使用的）:

@@ -14,9 +14,11 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Provider as JotaiProvider } from 'jotai';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import NetworkDemoScreen from './screens/NetworkDemoScreen';
 import { TopTabsNavigator } from './navigation/TopTabsNavigator';
 import { TabBarIconSvg } from './components/TabBarIconSvg';
 import type { HomeStackParamList } from './navigation/types';
@@ -48,16 +50,17 @@ function AppCombined() {
   const isDarkMode = useColorScheme() === 'dark';
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={{
-            tabBarActiveTintColor: '#007AFF',
-            tabBarInactiveTintColor: 'gray',
-            headerShown: false,
-          }}
-        >
+    <JotaiProvider>
+      <SafeAreaProvider>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <NavigationContainer>
+          <Tab.Navigator
+            screenOptions={{
+              tabBarActiveTintColor: '#007AFF',
+              tabBarInactiveTintColor: 'gray',
+              headerShown: false,
+            }}
+          >
           <Tab.Screen
             name="HomeTab"
             component={HomeStackScreen}
@@ -80,6 +83,18 @@ function AppCombined() {
             }}
           />
           <Tab.Screen
+            name="Network"
+            component={NetworkDemoScreen}
+            options={{
+              title: 'Network',
+              headerShown: true,
+              headerTitle: '网络请求',
+              tabBarIcon: ({ color, size, focused }) => (
+                <TabBarIconSvg name="network" color={color} size={size} focused={focused} />
+              ),
+            }}
+          />
+          <Tab.Screen
             name="Settings"
             component={SettingsScreen}
             options={{
@@ -93,6 +108,7 @@ function AppCombined() {
         </Tab.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
+    </JotaiProvider>
   );
 }
 

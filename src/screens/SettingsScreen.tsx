@@ -1,24 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import Svg, { Path } from 'react-native-svg';
-
-// Info Icon
-function InfoIcon({ color, size = 24 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
-      <Path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z" />
-    </Svg>
-  );
-}
-
-// Drawer Icon
-function DrawerIcon({ color, size = 24 }: { color: string; size?: number }) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill={color}>
-      <Path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-    </Svg>
-  );
-}
+import { InfoIcon, DrawerIcon } from '../components/icons';
 
 function SettingsScreen() {
   return (
@@ -109,7 +91,7 @@ function SettingsScreen() {
 
         {/* Usage Tip Card */}
         <View style={styles.tipCard}>
-          <Text style={styles.tipTitle}>💡 使用提示</Text>
+          <Text style={styles.tipTitle}>使用提示</Text>
           <Text style={styles.tipText}>
             您现在正在使用 Drawer Navigator（抽屉导航）。{'\n\n'}
             • 从右侧边缘向左滑动可以打开抽屉菜单{'\n'}

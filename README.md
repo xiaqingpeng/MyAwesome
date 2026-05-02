@@ -41,7 +41,7 @@
 - **响应式设计** - 适配不同屏幕尺寸
 
 ### 📱 功能页面
-- **Home** - 主页，展示欢迎信息和导航示例
+- **Home** - 我的，展示欢迎信息和导航示例
 - **Discover** - 发现页面，包含 Feed、Explore、Notifications 三个子标签
   - Feed - 内容流
   - Explore - 探索网格布局

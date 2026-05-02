@@ -53,7 +53,7 @@ export function DrawerHomeScreen() {
         </View>
         <Text style={styles.title}>Drawer Home</Text>
         <Text style={styles.description}>
-          这是抽屉导航的主页示例。抽屉导航适合用于：
+          这是抽屉导航的我的示例。抽屉导航适合用于：
         </Text>
         <View style={styles.featureList}>
           <View style={styles.featureItem}>
@@ -76,7 +76,7 @@ export function DrawerHomeScreen() {
         <View style={styles.infoCard}>
           <Text style={styles.infoTitle}>💡 使用提示</Text>
           <Text style={styles.infoText}>
-            • 从左侧边缘向右滑动打开抽屉{'\n'}
+            • 从右侧边缘向左滑动打开抽屉{'\n'}
             • 点击菜单图标打开抽屉{'\n'}
             • 点击遮罩层或按返回键关闭抽屉{'\n'}
             • 点击菜单项导航到对应页面
@@ -204,7 +204,7 @@ export function DrawerHelpScreen() {
           <View style={styles.helpItem}>
             <Text style={styles.helpQuestion}>如何使用抽屉导航？</Text>
             <Text style={styles.helpAnswer}>
-              从屏幕左侧边缘向右滑动，或点击左上角的菜单图标即可打开抽屉。
+              从屏幕右侧边缘向左滑动，或点击右上角的菜单图标即可打开抽屉。
             </Text>
           </View>
           <View style={styles.helpItem}>
@@ -216,7 +216,7 @@ export function DrawerHelpScreen() {
           <View style={styles.helpItem}>
             <Text style={styles.helpQuestion}>支持哪些手势？</Text>
             <Text style={styles.helpAnswer}>
-              支持从左边缘滑动打开、点击遮罩关闭、滑动关闭等手势操作。
+              支持从右边缘滑动打开、点击遮罩关闭、滑动关闭等手势操作。
             </Text>
           </View>
         </View>

@@ -17,7 +17,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider as JotaiProvider } from 'jotai';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import SettingsScreen from './screens/SettingsScreen';
 import NetworkDemoScreen from './screens/NetworkDemoScreen';
 import { TopTabsNavigator } from './navigation/TopTabsNavigator';
 import { DrawerNavigatorExample } from './navigation/DrawerNavigatorExample';
@@ -44,28 +43,8 @@ function HomeStackScreen() {
   );
 }
 
-// Stack Navigator for Settings tab (to include Drawer example)
-const SettingsStack = createNativeStackNavigator();
-
-function SettingsStackScreen() {
-  return (
-    <SettingsStack.Navigator>
-      <SettingsStack.Screen
-        name="SettingsMain"
-        component={SettingsScreen}
-        options={{ title: 'Settings' }}
-      />
-      <SettingsStack.Screen
-        name="DrawerExample"
-        component={DrawerNavigatorExample}
-        options={{ 
-          headerShown: false,
-          title: 'Drawer Navigator 示例',
-        }}
-      />
-    </SettingsStack.Navigator>
-  );
-}
+// Settings tab now directly uses Drawer Navigator
+// No need for SettingsStackScreen anymore
 
 // Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
@@ -120,7 +99,7 @@ function AppCombined() {
           />
           <Tab.Screen
             name="Settings"
-            component={SettingsStackScreen}
+            component={DrawerNavigatorExample}
             options={{
               title: 'Settings',
               headerShown: false,

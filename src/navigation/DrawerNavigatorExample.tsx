@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -20,6 +20,7 @@ import {
   DrawerNotificationsScreen,
   DrawerHelpScreen,
 } from '../screens/DrawerExampleScreen';
+import SettingsScreen from '../screens/SettingsScreen';
 
 // SVG Icons
 function HomeIcon({ color, size = 24 }: { color: string; size?: number }) {
@@ -135,6 +136,8 @@ export function DrawerNavigatorExample() {
       // 自定义抽屉内容
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
+        // 抽屉位置：从右侧打开
+        drawerPosition: 'right',
         // 抽屉样式
         drawerStyle: {
           backgroundColor: '#fff',
@@ -171,8 +174,8 @@ export function DrawerNavigatorExample() {
         name="DrawerHome"
         component={DrawerHomeScreen}
         options={{
-          title: '主页',
-          drawerLabel: '主页',
+          title: '我的',
+          drawerLabel: '我的',
           drawerIcon: ({ color, size }) => <HomeIcon color={color} size={size} />,
         }}
       />
@@ -192,11 +195,6 @@ export function DrawerNavigatorExample() {
           title: '通知',
           drawerLabel: '通知',
           drawerIcon: ({ color, size }) => <NotificationIcon color={color} size={size} />,
-          // 添加徽章
-          drawerBadge: 3,
-          drawerBadgeStyle: {
-            backgroundColor: '#FF3B30',
-          },
         }}
       />
       <Drawer.Screen
@@ -206,6 +204,15 @@ export function DrawerNavigatorExample() {
           title: '设置',
           drawerLabel: '设置',
           drawerIcon: ({ color, size }) => <SettingsIcon color={color} size={size} />,
+        }}
+      />
+      <Drawer.Screen
+        name="About"
+        component={SettingsScreen}
+        options={{
+          title: '关于',
+          drawerLabel: '关于',
+          drawerIcon: ({ color, size }) => <HelpIcon color={color} size={size} />,
         }}
       />
       <Drawer.Screen

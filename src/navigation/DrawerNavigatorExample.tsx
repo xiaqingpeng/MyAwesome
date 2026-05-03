@@ -1,6 +1,7 @@
 /**
  * Drawer Navigator 示例
  * 展示如何使用 @react-navigation/drawer 创建抽屉导航
+ * 支持深色模式
  */
 
 import React from 'react';
@@ -12,6 +13,8 @@ import {
   DrawerItem,
   DrawerContentComponentProps,
 } from '@react-navigation/drawer';
+import { useAtom } from 'jotai';
+import { themeColorsAtom } from '../store/themeAtoms';
 import {
   HomeIcon,
   ProfileIcon,
@@ -31,21 +34,23 @@ import SettingsScreen from '../screens/SettingsScreen';
 
 // 自定义抽屉内容
 function CustomDrawerContent(props: DrawerContentComponentProps) {
+  const [colors] = useAtom(themeColorsAtom);
+
   return (
-    <DrawerContentScrollView {...props} style={styles.drawerContainer}>
+    <DrawerContentScrollView {...props} style={[styles.drawerContainer, { backgroundColor: colors.surface }]}>
       {/* 用户信息头部 */}
-      <View style={styles.userInfoSection}>
-        <View style={styles.userAvatar}>
-          <Text style={styles.userAvatarText}>JD</Text>
+      <View style={[styles.userInfoSection, { backgroundColor: colors.primary }]}>
+        <View style={[styles.userAvatar, { backgroundColor: '#ffffff' }]}>
+          <Text style={[styles.userAvatarText, { color: colors.primary }]}>JD</Text>
         </View>
         <View style={styles.userInfo}>
           <Text style={styles.userName}>John Doe</Text>
-          <Text style={styles.userEmail}>john.doe@example.com</Text>
+          <Text style={[styles.userEmail, { color: '#ffffff' }]}>john.doe@example.com</Text>
         </View>
       </View>
 
       {/* 分隔线 */}
-      <View style={styles.divider} />
+      <View style={[styles.divider, { backgroundColor: colors.border }]} />
 
       {/* 导航菜单项 */}
       <View style={styles.menuSection}>
@@ -53,7 +58,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
       </View>
 
       {/* 分隔线 */}
-      <View style={styles.divider} />
+      <View style={[styles.divider, { backgroundColor: colors.border }]} />
 
       {/* 额外的菜单项 */}
       <View style={styles.extraSection}>
@@ -61,8 +66,8 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
           label="帮助中心"
           icon={({ color, size }) => <HelpIcon color={color} size={size} />}
           onPress={() => props.navigation.navigate('Help')}
-          activeTintColor="#007AFF"
-          inactiveTintColor="#666"
+          activeTintColor={colors.primary}
+          inactiveTintColor={colors.textSecondary}
         />
         <DrawerItem
           label="退出登录"
@@ -71,15 +76,15 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
             // 这里可以添加退出登录逻辑
             console.log('退出登录');
           }}
-          activeTintColor="#FF3B30"
-          inactiveTintColor="#666"
-          labelStyle={{ color: '#FF3B30' }}
+          activeTintColor={colors.error}
+          inactiveTintColor={colors.textSecondary}
+          labelStyle={{ color: colors.error }}
         />
       </View>
 
       {/* 版本信息 */}
       <View style={styles.versionSection}>
-        <Text style={styles.versionText}>版本 1.0.0</Text>
+        <Text style={[styles.versionText, { color: colors.textTertiary }]}>版本 1.0.0</Text>
       </View>
     </DrawerContentScrollView>
   );
@@ -89,6 +94,8 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 const Drawer = createDrawerNavigator();
 
 export function DrawerNavigatorExample() {
+  const [colors] = useAtom(themeColorsAtom);
+
   return (
     <Drawer.Navigator
       // 自定义抽屉内容
@@ -98,14 +105,14 @@ export function DrawerNavigatorExample() {
         drawerPosition: 'right',
         // 抽屉样式
         drawerStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: colors.surface,
           width: 280,
         },
         // 激活状态颜色
-        drawerActiveTintColor: '#007AFF',
-        drawerActiveBackgroundColor: '#E3F2FD',
+        drawerActiveTintColor: colors.primary,
+        drawerActiveBackgroundColor: colors.primary + '20',
         // 非激活状态颜色
-        drawerInactiveTintColor: '#666',
+        drawerInactiveTintColor: colors.textSecondary,
         drawerInactiveBackgroundColor: 'transparent',
         // 标签样式
         drawerLabelStyle: {
@@ -120,11 +127,12 @@ export function DrawerNavigatorExample() {
         },
         // 头部样式
         headerStyle: {
-          backgroundColor: '#007AFF',
+          backgroundColor: colors.surface,
         },
-        headerTintColor: '#fff',
+        headerTintColor: colors.text,
         headerTitleStyle: {
           fontWeight: 'bold',
+          color: colors.text,
         },
       }}
     >
@@ -192,7 +200,6 @@ const styles = StyleSheet.create({
   },
   userInfoSection: {
     padding: 20,
-    backgroundColor: '#007AFF',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -200,7 +207,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#fff',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -208,7 +214,6 @@ const styles = StyleSheet.create({
   userAvatarText: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#007AFF',
   },
   userInfo: {
     flex: 1,
@@ -221,11 +226,9 @@ const styles = StyleSheet.create({
   },
   userEmail: {
     fontSize: 14,
-    color: '#E3F2FD',
   },
   divider: {
     height: 1,
-    backgroundColor: '#e0e0e0',
     marginVertical: 8,
   },
   menuSection: {
@@ -240,6 +243,5 @@ const styles = StyleSheet.create({
   },
   versionText: {
     fontSize: 12,
-    color: '#999',
   },
 });

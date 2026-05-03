@@ -1,17 +1,21 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useAtom } from 'jotai';
+import { themeColorsAtom } from '../store/themeAtoms';
 
 function FeedScreen() {
+  const [colors] = useAtom(themeColorsAtom);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.content}>
-        <Text style={styles.title}>Feed</Text>
-        <Text style={styles.subtitle}>Latest updates and posts</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Feed</Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Latest updates and posts</Text>
         
         {[1, 2, 3, 4, 5].map((item) => (
-          <View key={item} style={styles.card}>
-            <Text style={styles.cardTitle}>Post {item}</Text>
-            <Text style={styles.cardText}>
+          <View key={item} style={[styles.card, { backgroundColor: colors.surface }]}>
+            <Text style={[styles.cardTitle, { color: colors.text }]}>Post {item}</Text>
+            <Text style={[styles.cardText, { color: colors.textSecondary }]}>
               This is a sample post content. Swipe left or right to see other tabs.
             </Text>
           </View>
@@ -24,7 +28,6 @@ function FeedScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
   },
   content: {
     padding: 20,
@@ -33,15 +36,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#333',
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 20,
-    color: '#666',
   },
   card: {
-    backgroundColor: '#fff',
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
@@ -55,11 +55,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '600',
     marginBottom: 8,
-    color: '#333',
   },
   cardText: {
     fontSize: 14,
-    color: '#666',
     lineHeight: 20,
   },
 });

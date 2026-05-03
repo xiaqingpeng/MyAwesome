@@ -4,6 +4,8 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RouteProp } from '@react-navigation/native';
 import type { HomeStackParamList } from '../navigation/types';
+import { useAtom } from 'jotai';
+import { themeColorsAtom } from '../store/themeAtoms';
 
 type ProfileScreenNavigationProp = NativeStackNavigationProp<
   HomeStackParamList,
@@ -16,11 +18,12 @@ function ProfileScreen() {
   const navigation = useNavigation<ProfileScreenNavigationProp>();
   const route = useRoute<ProfileScreenRouteProp>();
   const { name } = route.params;
+  const [colors] = useAtom(themeColorsAtom);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Profile Screen</Text>
-      <Text style={styles.profileText}>This is {name}'s profile</Text>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
+      <Text style={[styles.title, { color: colors.text }]}>Profile Screen</Text>
+      <Text style={[styles.profileText, { color: colors.textSecondary }]}>This is {name}'s profile</Text>
       <Button
         title="Go back to Home"
         onPress={() => navigation.goBack()}
@@ -35,18 +38,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f5f5f5',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: '#333',
   },
   profileText: {
     fontSize: 18,
     marginBottom: 30,
-    color: '#666',
   },
 });
 

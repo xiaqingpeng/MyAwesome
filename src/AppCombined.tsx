@@ -6,15 +6,17 @@
  * - Bottom Tabs: 主要功能切换
  * - Top Tabs: 内容分类浏览
  * - Stack: 页面层级导航
+ * - 支持深色模式
  */
 
-import React from 'react';
-import { StatusBar, useColorScheme } from 'react-native';
+import React, { useEffect } from 'react';
+import { StatusBar, Appearance } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { Provider as JotaiProvider } from 'jotai';
+import { Provider as JotaiProvider, useAtom, useSetAtom } from 'jotai';
+import { themeColorsAtom, isDarkModeAtom, systemThemeAtom } from './store/themeAtoms';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { TopTabsNavigator } from './navigation/TopTabsNavigator';
@@ -26,8 +28,20 @@ import type { HomeStackParamList } from './navigation/types';
 const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 
 function HomeStackScreen() {
+  const [colors] = useAtom(themeColorsAtom);
+
   return (
-    <HomeStack.Navigator>
+    <HomeStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.surface,
+        },
+        headerTintColor: colors.text,
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}
+    >
       <HomeStack.Screen
         name="HomeMain"
         component={HomeScreen}
@@ -42,27 +56,38 @@ function HomeStackScreen() {
   );
 }
 
-// Settings tab now directly uses Drawer Navigator
-// No need for SettingsStackScreen anymore
-
 // Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
 
-function AppCombined() {
-  const isDarkMode = useColorScheme() === 'dark';
+function AppNavigator() {
+  const [colors] = useAtom(themeColorsAtom);
+  const [isDark] = useAtom(isDarkModeAtom);
+  const setSystemTheme = useSetAtom(systemThemeAtom);
+
+  // 监听系统主题变化
+  useEffect(() => {
+    const subscription = Appearance.addChangeListener(({ colorScheme }) => {
+      setSystemTheme(colorScheme === 'dark' ? 'dark' : 'light');
+    });
+
+    return () => subscription.remove();
+  }, [setSystemTheme]);
 
   return (
-    <JotaiProvider>
-      <SafeAreaProvider>
-        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-        <NavigationContainer>
-          <Tab.Navigator
-            screenOptions={{
-              tabBarActiveTintColor: '#007AFF',
-              tabBarInactiveTintColor: 'gray',
-              headerShown: false,
-            }}
-          >
+    <>
+      <StatusBar barStyle={isDark ? 'light-content' : 'dark-content'} backgroundColor={colors.surface} />
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            tabBarActiveTintColor: colors.primary,
+            tabBarInactiveTintColor: colors.textSecondary,
+            tabBarStyle: {
+              backgroundColor: colors.surface,
+              borderTopColor: colors.border,
+            },
+            headerShown: false,
+          }}
+        >
           <Tab.Screen
             name="HomeTab"
             component={HomeStackScreen}
@@ -97,7 +122,16 @@ function AppCombined() {
           />
         </Tab.Navigator>
       </NavigationContainer>
-    </SafeAreaProvider>
+    </>
+  );
+}
+
+function AppCombined() {
+  return (
+    <JotaiProvider>
+      <SafeAreaProvider>
+        <AppNavigator />
+      </SafeAreaProvider>
     </JotaiProvider>
   );
 }

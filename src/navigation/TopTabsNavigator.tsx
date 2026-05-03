@@ -7,12 +7,15 @@
  * - 自动调整标签宽度（width: 'auto'）
  * - 可以容纳更多标签而不会拥挤
  * - 支持左右滑动切换页面
+ * - 支持深色模式
  */
 
 import React from 'react';
 import { Dimensions, View, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useAtom } from 'jotai';
+import { themeColorsAtom } from '../store/themeAtoms';
 import FeedScreen from '../screens/FeedScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
@@ -24,21 +27,22 @@ const TopTab = createMaterialTopTabNavigator<TopTabParamList>();
 
 export function TopTabsNavigator() {
   const insets = useSafeAreaInsets();
+  const [colors] = useAtom(themeColorsAtom);
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <View style={[styles.container, { paddingTop: insets.top, backgroundColor: colors.background }]}>
       <TopTab.Navigator
         initialLayout={{ width: Dimensions.get('window').width }}
         screenOptions={{
-          tabBarActiveTintColor: '#007AFF',
-          tabBarInactiveTintColor: 'gray',
+          tabBarActiveTintColor: colors.primary,
+          tabBarInactiveTintColor: colors.textSecondary,
           tabBarLabelStyle: {
             fontSize: 14,
             fontWeight: '600',
             textTransform: 'none',
           },
           tabBarStyle: {
-            backgroundColor: '#ffffff',
+            backgroundColor: colors.surface,
             elevation: 4,
             shadowColor: '#000',
             shadowOffset: { width: 0, height: 2 },
@@ -46,10 +50,10 @@ export function TopTabsNavigator() {
             shadowRadius: 4,
           },
           tabBarIndicatorStyle: {
-            backgroundColor: '#007AFF',
+            backgroundColor: colors.primary,
             height: 3,
           },
-          tabBarPressColor: 'rgba(0, 122, 255, 0.1)',
+          tabBarPressColor: colors.primary + '20',
           tabBarScrollEnabled: true,  // ✅ 启用标签栏滚动
           tabBarItemStyle: {
             width: 'auto',  // ✅ 自动宽度，根据内容调整
@@ -104,6 +108,5 @@ export function TopTabsNavigator() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ffffff',
   },
 });

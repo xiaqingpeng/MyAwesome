@@ -12,6 +12,7 @@ import {
 import { useAtom, useAtomValue } from 'jotai';
 import axios, { CancelTokenSource } from 'axios';
 import Svg, { Path } from 'react-native-svg';
+import { themeColorsAtom } from '../store/themeAtoms';
 import {
   UsersIcon,
   ArticleIcon,
@@ -45,6 +46,7 @@ import {
 import { apiService } from '../services/api';
 
 function NetworkDemoScreen() {
+  const [colors] = useAtom(themeColorsAtom);
   const [loading, setLoading] = useAtom(loadingAtom);
   const [statusText, setStatusText] = useAtom(statusTextAtom);
   const [statusColor, setStatusColor] = useAtom(statusColorAtom);
@@ -195,18 +197,18 @@ function NetworkDemoScreen() {
   // 获取图标背景色
   const getIconBackground = (item: DataItem) => {
     if (item.title.includes('创建成功') || item.title.includes('✅')) {
-      return '#E8F5E9';
+      return colors.success + '20';
     }
     if (item.detail.includes('User ID') || item.detail.includes('userId')) {
-      return '#E3F2FD';
+      return colors.primary + '20';
     }
     if (item.subtitle.includes('已完成') || item.subtitle.includes('未完成')) {
-      return '#FFF3E0';
+      return colors.warning + '20';
     }
     if (item.subtitle.includes('@') || item.detail.includes('@')) {
-      return '#F3E5F5';
+      return colors.info + '20';
     }
-    return '#E3F2FD';
+    return colors.primary + '20';
   };
 
   // 获取状态图标
@@ -226,43 +228,43 @@ function NetworkDemoScreen() {
 
   // 渲染数据项
   const renderItem = ({ item }: { item: DataItem }) => (
-    <View style={styles.listItem}>
+    <View style={[styles.listItem, { backgroundColor: colors.card, borderColor: colors.border }]}>
       <View style={styles.itemIconContainer}>
         <View style={[styles.itemIcon, { backgroundColor: getIconBackground(item) }]}>
           {getItemIcon(item)}
         </View>
       </View>
       <View style={styles.itemContent}>
-        <Text style={styles.itemTitle} numberOfLines={2}>{item.title}</Text>
+        <Text style={[styles.itemTitle, { color: colors.text }]} numberOfLines={2}>{item.title}</Text>
         {item.subtitle ? (
-          <Text style={styles.itemSubtitle} numberOfLines={2}>
+          <Text style={[styles.itemSubtitle, { color: colors.textSecondary }]} numberOfLines={2}>
             {item.subtitle}
           </Text>
         ) : null}
         {item.detail ? (
-          <Text style={styles.itemDetail}>{item.detail}</Text>
+          <Text style={[styles.itemDetail, { color: colors.textTertiary }]}>{item.detail}</Text>
         ) : null}
       </View>
     </View>
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: colors.background }]}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
         {/* 标题卡片 */}
-        <View style={styles.headerCard}>
-          <View style={styles.headerIconContainer}>
+        <View style={[styles.headerCard, { backgroundColor: colors.surface }]}>
+          <View style={[styles.headerIconContainer, { backgroundColor: colors.primary + '20' }]}>
             <Svg width={40} height={40} viewBox="0 0 24 24" fill="none">
               <Path
                 d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"
-                stroke="#007AFF"
+                stroke={colors.primary}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <Path
                 d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"
-                stroke="#007AFF"
+                stroke={colors.primary}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -270,14 +272,14 @@ function NetworkDemoScreen() {
             </Svg>
           </View>
           <View style={styles.headerTextContainer}>
-            <Text style={styles.title}>网络请求示例</Text>
-            <Text style={styles.subtitle}>Jotai + Axios</Text>
+            <Text style={[styles.title, { color: colors.text }]}>网络请求示例</Text>
+            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Jotai + Axios</Text>
           </View>
         </View>
 
         {/* API 请求示例 */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>GET 请求示例</Text>
+        <View style={[styles.section, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>GET 请求示例</Text>
           <View style={styles.buttonGrid}>
             <TouchableOpacity
               style={[styles.button, styles.buttonBlue, loading && styles.buttonDisabled]}
@@ -322,26 +324,26 @@ function NetworkDemoScreen() {
         </View>
 
         {/* POST 请求示例 */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>POST 请求示例</Text>
+        <View style={[styles.section, { backgroundColor: colors.surface }]}>
+          <Text style={[styles.sectionTitle, { color: colors.text }]}>POST 请求示例</Text>
           <View style={styles.inputContainer}>
             <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>用户名</Text>
+              <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>用户名</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
                 placeholder="请输入用户名"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.placeholder}
                 value={nameInput}
                 onChangeText={setNameInput}
                 editable={!loading}
               />
             </View>
             <View style={styles.inputWrapper}>
-              <Text style={styles.inputLabel}>邮箱</Text>
+              <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>邮箱</Text>
               <TextInput
-                style={styles.input}
+                style={[styles.input, { backgroundColor: colors.background, borderColor: colors.border, color: colors.text }]}
                 placeholder="请输入邮箱地址"
-                placeholderTextColor="#999"
+                placeholderTextColor={colors.placeholder}
                 value={emailInput}
                 onChangeText={setEmailInput}
                 keyboardType="email-address"
@@ -365,7 +367,7 @@ function NetworkDemoScreen() {
         </View>
 
         {/* 状态显示 */}
-        <View style={[styles.statusContainer, { borderLeftColor: statusColor }]}>
+        <View style={[styles.statusContainer, { backgroundColor: colors.surface, borderLeftColor: statusColor }]}>
           <View style={styles.statusRow}>
             {loading ? (
               <ActivityIndicator size="small" color={statusColor} />
@@ -377,7 +379,7 @@ function NetworkDemoScreen() {
                 {statusText}
               </Text>
               {progressText ? (
-                <Text style={styles.progressText}>{progressText}</Text>
+                <Text style={[styles.progressText, { color: colors.textSecondary }]}>{progressText}</Text>
               ) : null}
             </View>
           </View>
@@ -417,10 +419,10 @@ function NetworkDemoScreen() {
       </ScrollView>
 
       {/* 数据列表 */}
-      <View style={styles.listContainer}>
+      <View style={[styles.listContainer, { backgroundColor: colors.surface }]}>
         <View style={styles.listHeader}>
-          <Text style={styles.listTitle}>响应数据</Text>
-          <View style={styles.countBadge}>
+          <Text style={[styles.listTitle, { color: colors.text }]}>响应数据</Text>
+          <View style={[styles.countBadge, { backgroundColor: colors.primary }]}>
             <Text style={styles.countText}>{dataCount}</Text>
           </View>
         </View>
@@ -429,21 +431,21 @@ function NetworkDemoScreen() {
             <Svg width={80} height={80} viewBox="0 0 24 24" fill="none">
               <Path
                 d="M9 11l3 3L22 4"
-                stroke="#E0E0E0"
+                stroke={colors.border}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
               <Path
                 d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"
-                stroke="#E0E0E0"
+                stroke={colors.border}
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
             </Svg>
-            <Text style={styles.emptyText}>暂无数据</Text>
-            <Text style={styles.emptyHint}>点击上方按钮获取数据</Text>
+            <Text style={[styles.emptyText, { color: colors.textTertiary }]}>暂无数据</Text>
+            <Text style={[styles.emptyHint, { color: colors.textTertiary }]}>点击上方按钮获取数据</Text>
           </View>
         ) : (
           <FlatList
@@ -462,7 +464,6 @@ function NetworkDemoScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
   },
   scrollView: {
     flex: 1,
@@ -475,7 +476,6 @@ const styles = StyleSheet.create({
   headerCard: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 20,
     marginBottom: 16,
@@ -489,7 +489,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: '#E3F2FD',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 16,
@@ -501,17 +500,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 4,
-    color: '#1A1A1A',
   },
   subtitle: {
     fontSize: 14,
-    color: '#666',
     fontWeight: '500',
   },
   // 区块
   section: {
     marginBottom: 16,
-    backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
     shadowColor: '#000',
@@ -524,7 +520,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     marginBottom: 16,
-    color: '#1A1A1A',
   },
   // 按钮网格
   buttonGrid: {
@@ -580,18 +575,14 @@ const styles = StyleSheet.create({
   inputLabel: {
     fontSize: 13,
     fontWeight: '600',
-    color: '#666',
     marginBottom: 8,
   },
   input: {
-    backgroundColor: '#F8F9FA',
     borderRadius: 12,
     paddingHorizontal: 16,
     paddingVertical: 14,
     fontSize: 15,
     borderWidth: 1.5,
-    borderColor: '#E8E8E8',
-    color: '#1A1A1A',
   },
   // 提交按钮
   submitButton: {
@@ -619,7 +610,6 @@ const styles = StyleSheet.create({
   },
   // 状态容器
   statusContainer: {
-    backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -645,7 +635,6 @@ const styles = StyleSheet.create({
   },
   progressText: {
     fontSize: 12,
-    color: '#666',
     marginTop: 4,
   },
   // 操作按钮
@@ -684,7 +673,6 @@ const styles = StyleSheet.create({
   // 列表容器
   listContainer: {
     flex: 1,
-    backgroundColor: '#fff',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,
     paddingTop: 20,
@@ -704,10 +692,8 @@ const styles = StyleSheet.create({
   listTitle: {
     fontSize: 18,
     fontWeight: '700',
-    color: '#1A1A1A',
   },
   countBadge: {
-    backgroundColor: '#007AFF',
     paddingHorizontal: 12,
     paddingVertical: 4,
     borderRadius: 12,
@@ -726,12 +712,10 @@ const styles = StyleSheet.create({
   // 列表项
   listItem: {
     flexDirection: 'row',
-    backgroundColor: '#F8F9FA',
     borderRadius: 12,
     padding: 14,
     marginBottom: 10,
     borderWidth: 1,
-    borderColor: '#E8E8E8',
   },
   itemIconContainer: {
     marginRight: 12,
@@ -750,18 +734,15 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
     marginBottom: 6,
-    color: '#1A1A1A',
     lineHeight: 20,
   },
   itemSubtitle: {
     fontSize: 13,
-    color: '#666',
     marginBottom: 4,
     lineHeight: 18,
   },
   itemDetail: {
     fontSize: 12,
-    color: '#999',
     fontWeight: '500',
   },
   // 空状态
@@ -774,13 +755,11 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#999',
     marginTop: 20,
     marginBottom: 8,
   },
   emptyHint: {
     fontSize: 14,
-    color: '#CCC',
   },
 });
 

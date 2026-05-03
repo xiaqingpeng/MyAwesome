@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { useAtom } from 'jotai';
+import { themeColorsAtom } from '../store/themeAtoms';
 import {
   BellIcon,
   HeartIcon,
@@ -19,6 +21,8 @@ interface Notification {
 }
 
 function NotificationsScreen() {
+  const [colors] = useAtom(themeColorsAtom);
+
   const notifications: Notification[] = [
     { id: 1, type: 'follower', title: 'New follower', message: 'John started following you', time: '2m ago' },
     { id: 2, type: 'like', title: 'New like', message: 'Sarah liked your post', time: '15m ago' },
@@ -28,47 +32,48 @@ function NotificationsScreen() {
   ];
 
   const getNotificationIcon = (type: NotificationType) => {
+    const iconColor = colors.text;
     switch (type) {
       case 'follower':
-        return <UserIcon />;
+        return <UserIcon color={iconColor} />;
       case 'like':
-        return <HeartIcon />;
+        return <HeartIcon color={iconColor} />;
       case 'comment':
-        return <MessageIcon color="#2196F3" />;
+        return <MessageIcon color={colors.info} />;
       case 'message':
-        return <MessageIcon />;
+        return <MessageIcon color={iconColor} />;
       case 'update':
-        return <DownloadIcon />;
+        return <DownloadIcon color={iconColor} />;
       default:
-        return <BellIcon />;
+        return <BellIcon color={iconColor} />;
     }
   };
 
   const getIconBackgroundColor = (type: NotificationType) => {
     switch (type) {
       case 'follower':
-        return '#F3E5F5';
+        return colors.primary + '20';
       case 'like':
-        return '#FCE4EC';
+        return colors.error + '20';
       case 'comment':
-        return '#E3F2FD';
+        return colors.info + '20';
       case 'message':
-        return '#E8F5E9';
+        return colors.success + '20';
       case 'update':
-        return '#FFF3E0';
+        return colors.warning + '20';
       default:
-        return '#E3F2FD';
+        return colors.primary + '20';
     }
   };
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={[styles.container, { backgroundColor: colors.background }]}>
       <View style={styles.content}>
-        <Text style={styles.title}>Notifications</Text>
-        <Text style={styles.subtitle}>Stay updated with latest activities</Text>
+        <Text style={[styles.title, { color: colors.text }]}>Notifications</Text>
+        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>Stay updated with latest activities</Text>
         
         {notifications.map((notification) => (
-          <View key={notification.id} style={styles.notificationCard}>
+          <View key={notification.id} style={[styles.notificationCard, { backgroundColor: colors.surface }]}>
             <View style={[
               styles.notificationIcon,
               { backgroundColor: getIconBackgroundColor(notification.type) }
@@ -76,9 +81,9 @@ function NotificationsScreen() {
               {getNotificationIcon(notification.type)}
             </View>
             <View style={styles.notificationContent}>
-              <Text style={styles.notificationTitle}>{notification.title}</Text>
-              <Text style={styles.notificationMessage}>{notification.message}</Text>
-              <Text style={styles.notificationTime}>{notification.time}</Text>
+              <Text style={[styles.notificationTitle, { color: colors.text }]}>{notification.title}</Text>
+              <Text style={[styles.notificationMessage, { color: colors.textSecondary }]}>{notification.message}</Text>
+              <Text style={[styles.notificationTime, { color: colors.textTertiary }]}>{notification.time}</Text>
             </View>
           </View>
         ))}
@@ -90,7 +95,6 @@ function NotificationsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
   },
   content: {
     padding: 20,
@@ -99,16 +103,13 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 10,
-    color: '#333',
   },
   subtitle: {
     fontSize: 16,
     marginBottom: 20,
-    color: '#666',
   },
   notificationCard: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
     padding: 16,
     borderRadius: 8,
     marginBottom: 12,
@@ -133,16 +134,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     marginBottom: 4,
-    color: '#333',
   },
   notificationMessage: {
     fontSize: 14,
-    color: '#666',
     marginBottom: 4,
   },
   notificationTime: {
     fontSize: 12,
-    color: '#999',
   },
 });
 

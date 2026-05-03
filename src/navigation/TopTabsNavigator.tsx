@@ -1,6 +1,12 @@
 /**
  * Material Top Tabs Navigator 组件
  * 可以嵌套在 Bottom Tabs 中使用
+ * 
+ * 特性：
+ * - 支持标签栏滚动（tabBarScrollEnabled）
+ * - 自动调整标签宽度（width: 'auto'）
+ * - 可以容纳更多标签而不会拥挤
+ * - 支持左右滑动切换页面
  */
 
 import React from 'react';
@@ -10,6 +16,8 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import FeedScreen from '../screens/FeedScreen';
 import ExploreScreen from '../screens/ExploreScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
+import NetworkDemoScreen from '../screens/NetworkDemoScreen';
+import CodegenDemoScreen from '../screens/CodegenDemoScreen';
 import type { TopTabParamList } from './types';
 
 const TopTab = createMaterialTopTabNavigator<TopTabParamList>();
@@ -42,6 +50,12 @@ export function TopTabsNavigator() {
             height: 3,
           },
           tabBarPressColor: 'rgba(0, 122, 255, 0.1)',
+          tabBarScrollEnabled: true,  // ✅ 启用标签栏滚动
+          tabBarItemStyle: {
+            width: 'auto',  // ✅ 自动宽度，根据内容调整
+            minWidth: 90,   // ✅ 最小宽度
+            paddingHorizontal: 12,  // ✅ 水平内边距
+          },
           swipeEnabled: true,
           lazy: true,
           lazyPreloadDistance: 1,
@@ -59,6 +73,20 @@ export function TopTabsNavigator() {
           component={ExploreScreen}
           options={{
             tabBarLabel: 'Explore',
+          }}
+        />
+        <TopTab.Screen
+          name="Network"
+          component={NetworkDemoScreen}
+          options={{
+            tabBarLabel: 'Network',
+          }}
+        />
+        <TopTab.Screen
+          name="Codegen"
+          component={CodegenDemoScreen}
+          options={{
+            tabBarLabel: 'Codegen',
           }}
         />
         <TopTab.Screen

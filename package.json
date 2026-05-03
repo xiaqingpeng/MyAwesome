@@ -7,7 +7,10 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "codegen": "npx @react-native-community/cli codegen",
+    "codegen:ios": "npx @react-native-community/cli codegen --platform ios",
+    "codegen:android": "npx @react-native-community/cli codegen --platform android"
   },
   "dependencies": {
     "@react-native/new-app-screen": "0.85.2",
@@ -52,5 +55,14 @@
   },
   "engines": {
     "node": ">= 22.11.0"
+  },
+  "codegenConfig": {
+    "name": "MyAwesomeSpec",
+    "type": "all",
+    "jsSrcsDir": "src/specs",
+    "android": {
+      "javaPackageName": "com.myawesome.specs"
+    },
+    "ios": {}
   }
 }

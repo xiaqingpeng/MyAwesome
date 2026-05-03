@@ -14,5 +14,7 @@ export type RootTabParamList = {
 export type TopTabParamList = {
   Feed: undefined;
   Explore: undefined;
+  Network: undefined;
+  Codegen: undefined;
   Notifications: undefined;
 };

@@ -17,7 +17,6 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider as JotaiProvider } from 'jotai';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import NetworkDemoScreen from './screens/NetworkDemoScreen';
 import { TopTabsNavigator } from './navigation/TopTabsNavigator';
 import { DrawerNavigatorExample } from './navigation/DrawerNavigatorExample';
 import { TabBarIconSvg } from './components/TabBarIconSvg';
@@ -82,18 +81,6 @@ function AppCombined() {
               headerShown: false,
               tabBarIcon: ({ color, size, focused }) => (
                 <TabBarIconSvg name="discover" color={color} size={size} focused={focused} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Network"
-            component={NetworkDemoScreen}
-            options={{
-              title: 'Network',
-              headerShown: true,
-              headerTitle: '网络请求',
-              tabBarIcon: ({ color, size, focused }) => (
-                <TabBarIconSvg name="network" color={color} size={size} focused={focused} />
               ),
             }}
           />

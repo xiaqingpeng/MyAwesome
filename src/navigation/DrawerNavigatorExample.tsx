@@ -4,7 +4,7 @@
  * 支持深色模式
  */
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import {
   createDrawerNavigator,
@@ -31,10 +31,48 @@ import {
   DrawerHelpScreen,
 } from '../screens/DrawerExampleScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import VersionInfo from '../specs/NativeVersionInfo';
 
 // 自定义抽屉内容
 function CustomDrawerContent(props: DrawerContentComponentProps) {
   const [colors] = useAtom(themeColorsAtom);
+  const [versionText, setVersionText] = useState('版本 --');
+
+  useEffect(() => {
+    let isActive = true;
+
+    const loadAppVersion = async () => {
+      if (!VersionInfo) {
+        return;
+      }
+
+      try {
+        const [versionName, buildNumber] = await Promise.all([
+          VersionInfo.getVersionName(),
+          VersionInfo.getBuildNumber(),
+        ]);
+        const versionLabel = versionName && buildNumber
+          ? `版本 ${versionName} (${buildNumber})`
+          : versionName
+          ? `版本 ${versionName}`
+          : '版本 --';
+
+        if (isActive) {
+          setVersionText(versionLabel);
+        }
+      } catch {
+        if (isActive) {
+          setVersionText('版本 --');
+        }
+      }
+    };
+
+    loadAppVersion();
+
+    return () => {
+      isActive = false;
+    };
+  }, []);
 
   return (
     <DrawerContentScrollView {...props} style={[styles.drawerContainer, { backgroundColor: colors.surface }]}>
@@ -84,7 +122,7 @@ function CustomDrawerContent(props: DrawerContentComponentProps) {
 
       {/* 版本信息 */}
       <View style={styles.versionSection}>
-        <Text style={[styles.versionText, { color: colors.textTertiary }]}>版本 1.0.0</Text>
+        <Text style={[styles.versionText, { color: colors.textTertiary }]}>{versionText}</Text>
       </View>
     </DrawerContentScrollView>
   );

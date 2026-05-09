@@ -13,6 +13,7 @@ class MyAwesomePackage : TurboReactPackage() {
         return when (name) {
             CalculatorModule.NAME -> CalculatorModule(reactContext)
             CacheManagerModule.NAME -> CacheManagerModule(reactContext)
+            VersionInfoModule.NAME -> VersionInfoModule(reactContext)
             else -> null
         }
     }
@@ -31,6 +32,14 @@ class MyAwesomePackage : TurboReactPackage() {
                 CacheManagerModule.NAME to ReactModuleInfo(
                     CacheManagerModule.NAME,
                     "CacheManagerModule",
+                    false, // canOverrideExistingModule
+                    false, // needsEagerInit
+                    true,  // isCxxModule
+                    true   // isTurboModule
+                ),
+                VersionInfoModule.NAME to ReactModuleInfo(
+                    VersionInfoModule.NAME,
+                    "VersionInfoModule",
                     false, // canOverrideExistingModule
                     false, // needsEagerInit
                     true,  // isCxxModule

@@ -54,6 +54,7 @@
   - 请求取消功能
 - **Profile** - 个人资料页面
 - **Settings** - 设置页面
+- **Drawer Settings** - 抽屉设置页，支持读取和清空当前 App 的手机缓存数据
 
 ### 🛠 技术栈
 - **React Native** - 跨平台移动应用框架
@@ -97,6 +98,7 @@ MyAwesome/
 │   │
 │   ├── specs/                              # Codegen TypeScript 规范 ⭐
 │   │   ├── CustomButtonNativeComponent.ts  # Fabric Component 规范
+│   │   ├── NativeCacheManager.ts           # 缓存管理 Turbo Module 规范 ⭐
 │   │   └── NativeCalculator.ts             # Turbo Module 规范
 │   │
 │   ├── store/                              # 状态管理
@@ -111,13 +113,15 @@ MyAwesome/
 │   │   │   └── generated/                  # Codegen 生成的 Android 代码
 │   │   │       └── source/codegen/
 │   │   │           ├── java/com/myawesome/specs/
-│   │   │           │   └── NativeCalculatorSpec.java
+│   │   │           │   ├── NativeCalculatorSpec.java
+│   │   │           │   └── NativeCacheManagerSpec.java
 │   │   │           ├── java/com/facebook/react/viewmanagers/
 │   │   │           │   ├── CustomButtonManagerInterface.java
 │   │   │           │   └── CustomButtonManagerDelegate.java
 │   │   │           └── jni/                # C++ 层代码
 │   │   │
 │   │   └── src/main/java/com/myawesome/
+│   │       ├── CacheManagerModule.kt       # 缓存管理 Turbo Module 实现 ⭐
 │   │       ├── CalculatorModule.kt         # Calculator Turbo Module 实现 ⭐
 │   │       ├── CustomButtonManager.kt      # CustomButton ViewManager ⭐
 │   │       ├── CustomButtonView.kt         # CustomButton View 实现 ⭐
@@ -129,6 +133,8 @@ MyAwesome/
 │
 ├── ios/                                    # iOS 原生代码
 │   ├── MyAwesome/
+│   │   ├── CacheManager.h                  # 缓存管理 Turbo Module 头文件 ⭐
+│   │   ├── CacheManager.mm                 # 缓存管理 Turbo Module 实现 ⭐
 │   │   ├── Calculator.h                    # Calculator Turbo Module 头文件 ⭐
 │   │   ├── Calculator.mm                   # Calculator Turbo Module 实现 ⭐
 │   │   ├── CustomButtonView.h              # CustomButton Fabric Component 头文件 ⭐
@@ -207,21 +213,21 @@ MyAwesome/
 | `src/navigation/` | 导航配置和类型定义 | `TopTabsNavigator.tsx`, `types.ts` |
 | `src/screens/` | 应用页面组件 | `CodegenDemoScreen.tsx`, `NetworkDemoScreen.tsx` |
 | `src/services/` | 业务逻辑和 API 服务 | `api.ts` |
-| `src/specs/` | **Codegen TypeScript 规范** ⭐ | `NativeCalculator.ts`, `CustomButtonNativeComponent.ts` |
+| `src/specs/` | **Codegen TypeScript 规范** ⭐ | `NativeCalculator.ts`, `NativeCacheManager.ts`, `CustomButtonNativeComponent.ts` |
 | `src/store/` | 状态管理（Jotai） | `networkAtoms.ts` |
 
 #### Android 原生目录
 
 | 目录 | 说明 | 关键文件 |
 |------|------|---------|
-| `android/app/src/main/java/com/myawesome/` | Android 原生实现 | `CalculatorModule.kt`, `CustomButtonManager.kt`, `MyAwesomePackage.kt` |
-| `android/app/build/generated/` | **Codegen 生成的 Android 代码** ⭐ | `NativeCalculatorSpec.java`, `CustomButtonManagerInterface.java` |
+| `android/app/src/main/java/com/myawesome/` | Android 原生实现 | `CacheManagerModule.kt`, `CalculatorModule.kt`, `CustomButtonManager.kt`, `MyAwesomePackage.kt` |
+| `android/app/build/generated/` | **Codegen 生成的 Android 代码** ⭐ | `NativeCalculatorSpec.java`, `NativeCacheManagerSpec.java`, `CustomButtonManagerInterface.java` |
 
 #### iOS 原生目录
 
 | 目录 | 说明 | 关键文件 |
 |------|------|---------|
-| `ios/MyAwesome/` | iOS 原生实现 | `Calculator.h/mm`, `CustomButtonView.h/mm`, `AppDelegate.swift` |
+| `ios/MyAwesome/` | iOS 原生实现 | `CacheManager.h/mm`, `Calculator.h/mm`, `CustomButtonView.h/mm`, `AppDelegate.swift` |
 | `build/generated/ios/` | **Codegen 生成的 iOS 代码** ⭐ | `MyAwesomeSpec.h`, `Props.h`, `EventEmitters.h` |
 
 #### 构建和配置
@@ -248,10 +254,12 @@ MyAwesome/
 
 **TypeScript 规范**（手动编写）:
 - `src/specs/NativeCalculator.ts` - Turbo Module 规范
+- `src/specs/NativeCacheManager.ts` - 缓存管理 Turbo Module 规范
 - `src/specs/CustomButtonNativeComponent.ts` - Fabric Component 规范
 
 **Android 实现**（手动编写）:
 - `android/app/src/main/java/com/myawesome/CalculatorModule.kt` - Turbo Module 实现
+- `android/app/src/main/java/com/myawesome/CacheManagerModule.kt` - 缓存管理 Turbo Module 实现
 - `android/app/src/main/java/com/myawesome/CustomButtonManager.kt` - ViewManager
 - `android/app/src/main/java/com/myawesome/CustomButtonView.kt` - View 实现
 - `android/app/src/main/java/com/myawesome/MyAwesomePackage.kt` - 模块注册
@@ -259,6 +267,8 @@ MyAwesome/
 **iOS 实现**（手动编写）:
 - `ios/MyAwesome/Calculator.h` - Turbo Module 头文件
 - `ios/MyAwesome/Calculator.mm` - Turbo Module 实现
+- `ios/MyAwesome/CacheManager.h` - 缓存管理 Turbo Module 头文件
+- `ios/MyAwesome/CacheManager.mm` - 缓存管理 Turbo Module 实现
 - `ios/MyAwesome/CustomButtonView.h` - Fabric Component 头文件
 - `ios/MyAwesome/CustomButtonView.mm` - Fabric Component 实现
 
@@ -528,7 +538,7 @@ MIT
 
 ### 🎯 实现概览
 
-本项目实现了两个完整的 Codegen 示例：
+本项目实现了三个完整的 Codegen 示例：
 
 1. **Calculator Turbo Module** - 原生计算模块
    - ✅ TypeScript 规范定义
@@ -545,13 +555,23 @@ MIT
    - ✅ 事件发射（onPress）
    - ✅ 完整的 UI 交互
 
+3. **CacheManager Turbo Module** - 当前 App 缓存管理模块
+   - ✅ TypeScript 规范定义
+   - ✅ Android Kotlin 实现
+   - ✅ iOS Objective-C++ 实现
+   - ✅ 实时读取 App 缓存目录大小
+   - ✅ 清空 App 缓存目录
+
+> 说明：移动系统不允许普通 App 读取或清理整台手机的系统缓存。本项目读取和清理的是系统分配给当前 App 的缓存目录。Android 包含 `cacheDir`、`codeCacheDir`、`externalCacheDir`；iOS 包含 `Library/Caches` 和 `tmp`。
+
 ### 📊 项目文件结构
 
 ```
 MyAwesome/
 ├── src/
 │   ├── specs/                                    # TypeScript 规范
-│   │   ├── NativeCalculator.ts                   # Turbo Module 规范
+│   │   ├── NativeCalculator.ts                   # Calculator Turbo Module 规范
+│   │   ├── NativeCacheManager.ts                 # CacheManager Turbo Module 规范
 │   │   └── CustomButtonNativeComponent.ts        # Fabric Component 规范
 │   ├── components/
 │   │   └── CustomButton.tsx                      # React 包装组件
@@ -559,6 +579,7 @@ MyAwesome/
 │       └── CodegenDemoScreen.tsx                 # 完整 Demo 界面
 │
 ├── android/app/src/main/java/com/myawesome/
+│   ├── CacheManagerModule.kt                     # CacheManager 实现
 │   ├── CalculatorModule.kt                       # Calculator 实现
 │   ├── CustomButtonManager.kt                    # Button ViewManager
 │   ├── CustomButtonView.kt                       # Button View
@@ -566,6 +587,8 @@ MyAwesome/
 │   └── MainApplication.kt                        # 应用配置
 │
 ├── ios/MyAwesome/
+│   ├── CacheManager.h                            # CacheManager 头文件
+│   ├── CacheManager.mm                           # CacheManager 实现
 │   ├── Calculator.h                              # Calculator 头文件
 │   ├── Calculator.mm                             # Calculator 实现
 │   ├── CustomButtonView.h                        # Button 头文件
@@ -604,6 +627,20 @@ export interface Spec extends TurboModule {
 }
 
 export default TurboModuleRegistry.getEnforcing<Spec>('Calculator');
+```
+
+#### Turbo Native Module - `src/specs/NativeCacheManager.ts`
+
+```typescript
+import type { TurboModule } from 'react-native';
+import { TurboModuleRegistry } from 'react-native';
+
+export interface Spec extends TurboModule {
+  getCacheSize(): Promise<number>;
+  clearCache(): Promise<number>;
+}
+
+export default TurboModuleRegistry.get<Spec>('CacheManager');
 ```
 
 **关键点**：
@@ -735,7 +772,8 @@ cd ..
 ```
 android/app/build/generated/source/codegen/
 ├── java/com/myawesome/specs/
-│   └── NativeCalculatorSpec.java          # ✅ Turbo Module 抽象基类
+│   ├── NativeCalculatorSpec.java          # ✅ Turbo Module 抽象基类
+│   └── NativeCacheManagerSpec.java        # ✅ 缓存管理 Module 抽象基类
 │       - 定义所有方法签名
 │       - 继承自 ReactContextBaseJavaModule
 │       - 需要在 Kotlin 中实现
@@ -765,7 +803,7 @@ android/app/build/generated/source/codegen/
 build/generated/ios/
 ├── MyAwesomeSpec/
 │   ├── MyAwesomeSpec.h                    # ✅ ObjC 协议定义
-│   │   - 定义 Calculator 方法签名
+│   │   - 定义 Calculator / CacheManager 方法签名
 │   │   - 需要在 .mm 文件中实现
 │   │
 │   └── MyAwesomeSpec-generated.mm         # ✅ ObjC 实现
@@ -795,6 +833,7 @@ build/generated/ios/
 | 文件 | 用途 | 是否需要手动编写 |
 |------|------|------------------|
 | `NativeCalculatorSpec.java` | Android Module 基类 | ❌ 自动生成，继承实现 |
+| `NativeCacheManagerSpec.java` | Android 缓存 Module 基类 | ❌ 自动生成，继承实现 |
 | `CustomButtonManagerInterface.java` | Android ViewManager 接口 | ❌ 自动生成，实现接口 |
 | `MyAwesomeSpec.h` | iOS Module 协议 | ❌ 自动生成，实现协议 |
 | `Props.h/cpp` | Fabric 属性定义 | ❌ 自动生成，直接使用 |
@@ -808,6 +847,7 @@ build/generated/ios/
 **Turbo Modules**:
 ```
 ✅ NativeCalculator.ts
+✅ NativeCacheManager.ts
 ✅ NativeStorage.ts
 ✅ NativeImagePicker.ts
 ❌ Calculator.ts          # 不会被 Codegen 识别
@@ -932,7 +972,19 @@ class CalculatorModule(reactContext: ReactApplicationContext) :
 - `promise.reject()` 返回错误
 - `getTypedExportedConstants()` 导出常量
 
-#### 6.2 CustomButton Fabric Component
+#### 6.2 CacheManager Turbo Module
+
+**文件**: `android/app/src/main/java/com/myawesome/CacheManagerModule.kt`
+
+用于读取和清空当前 App 的缓存目录：
+
+- `getCacheSize()`：递归统计 `cacheDir`、`codeCacheDir`、`externalCacheDir`
+- `clearCache()`：删除上述缓存目录下的文件，并返回清理后的实时大小
+- 返回值单位为 bytes，前端负责格式化为 B / KB / MB / GB
+
+该模块只处理当前 App 自己的缓存目录，不读取其他 App 或系统全局缓存。
+
+#### 6.3 CustomButton Fabric Component
 
 ##### ViewManager - `android/app/src/main/java/com/myawesome/CustomButtonManager.kt`
 
@@ -1077,7 +1129,7 @@ class CustomButtonView(private val reactContext: ReactContext) : Button(reactCon
 - View 使用 `RCTEventEmitter.receiveEvent()` 发送事件
 - 事件名称必须以 `top` 开头（如 `topPress`）
 
-#### 6.3 注册模块和组件
+#### 6.4 注册模块和组件
 
 ##### Package - `android/app/src/main/java/com/myawesome/MyAwesomePackage.kt`
 
@@ -1097,6 +1149,7 @@ class MyAwesomePackage : TurboReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
         return when (name) {
             CalculatorModule.NAME -> CalculatorModule(reactContext)
+            CacheManagerModule.NAME -> CacheManagerModule(reactContext)
             else -> null
         }
     }
@@ -1108,6 +1161,14 @@ class MyAwesomePackage : TurboReactPackage() {
                 CalculatorModule.NAME to ReactModuleInfo(
                     _name = CalculatorModule.NAME,
                     _className = "CalculatorModule",
+                    _canOverrideExistingModule = false,
+                    _needsEagerInit = false,
+                    isCxxModule = false,
+                    isTurboModule = true  // ⚠️ 标记为 Turbo Module
+                ),
+                CacheManagerModule.NAME to ReactModuleInfo(
+                    _name = CacheManagerModule.NAME,
+                    _className = "CacheManagerModule",
                     _canOverrideExistingModule = false,
                     _needsEagerInit = false,
                     isCxxModule = false,
@@ -1242,7 +1303,22 @@ RCT_EXPORT_METHOD(divide:(double)a
 - `getConstants` 导出常量
 - `getTurboModule` 返回 Turbo Module 实例
 
-#### 7.2 CustomButton Fabric Component
+#### 7.2 CacheManager Turbo Module
+
+**文件**:
+
+- `ios/MyAwesome/CacheManager.h`
+- `ios/MyAwesome/CacheManager.mm`
+
+用于读取和清空当前 App 的缓存目录：
+
+- `getCacheSize()`：递归统计 `Library/Caches` 和 `tmp`
+- `clearCache()`：删除上述缓存目录下的文件，并返回清理后的实时大小
+- 返回值单位为 bytes，前端负责格式化为 B / KB / MB / GB
+
+该模块需要实现 `<NativeCacheManagerSpec>`，并在 `getTurboModule` 中返回 `NativeCacheManagerSpecJSI`。
+
+#### 7.3 CustomButton Fabric Component
 
 ##### Header - `ios/MyAwesome/CustomButtonView.h`
 
@@ -1416,7 +1492,7 @@ Class<RCTComponentViewProtocol> CustomButtonCls(void)
 - `componentDescriptorProvider` 提供组件描述符
 - 导出 `CustomButtonCls` 函数供 React Native 使用
 
-#### 7.3 添加文件到 Xcode 项目
+#### 7.4 添加文件到 Xcode 项目
 
 **⚠️ 重要**: iOS 原生文件必须手动添加到 Xcode 项目中。
 
@@ -1432,6 +1508,8 @@ Class<RCTComponentViewProtocol> CustomButtonCls(void)
 3. 选择 **"Add Files to MyAwesome..."**
 
 4. 选择以下文件：
+   - `CacheManager.h`
+   - `CacheManager.mm`
    - `Calculator.h`
    - `Calculator.mm`
    - `CustomButtonView.h`
@@ -1452,6 +1530,8 @@ Class<RCTComponentViewProtocol> CustomButtonCls(void)
 ```
 path = MyAwesome/Calculator.h;
 path = MyAwesome/Calculator.mm;
+path = MyAwesome/CacheManager.h;
+path = MyAwesome/CacheManager.mm;
 path = MyAwesome/CustomButtonView.h;
 path = MyAwesome/CustomButtonView.mm;
 ```
@@ -1464,10 +1544,11 @@ path = MyAwesome/CustomButtonView.mm;
 3. 点击 **"Build Phases"** 标签
 4. 展开 **"Compile Sources"**
 5. 确认看到：
+   - ✅ `CacheManager.mm`
    - ✅ `Calculator.mm`
    - ✅ `CustomButtonView.mm`
 
-#### 7.4 安装 Pods 和构建
+#### 7.5 安装 Pods 和构建
 
 ```bash
 cd ios
@@ -1614,7 +1695,7 @@ pnpm ios
 ```bash
 # 检查 Turbo Module 规范
 ls android/app/build/generated/source/codegen/java/com/myawesome/specs/
-# 应该看到: NativeCalculatorSpec.java
+# 应该看到: NativeCalculatorSpec.java, NativeCacheManagerSpec.java
 
 # 检查 Fabric Component 接口
 ls android/app/build/generated/source/codegen/java/com/facebook/react/viewmanagers/
@@ -1658,6 +1739,12 @@ ls build/generated/ios/react/renderer/components/MyAwesomeSpec/
    - 调节圆角 → 按钮圆角应变化
    - 切换禁用 → 按钮应变灰且不可点击
    - 点击按钮 → 应显示点击次数和时间戳
+5. **测试缓存管理**：
+   - 打开抽屉导航的设置页
+   - 缓存区域应显示当前 App 缓存大小和更新时间
+   - 点击 "清空缓存" → 缓存大小应重新读取并更新
+
+> 新增或修改原生模块后，需要重新编译并安装 App。仅刷新 Metro 不会把新的 Android/iOS 原生代码加载到手机上。
 
 ### ✅ 10. 验证清单
 
@@ -1666,12 +1753,14 @@ ls build/generated/ios/react/renderer/components/MyAwesomeSpec/
 #### TypeScript 层
 - [x] TypeScript spec 文件已创建（`src/specs/`）
 - [x] 文件命名符合规范（`Native*.ts` 或 `*NativeComponent.ts`）
+- [x] CacheManager 规范已创建（`NativeCacheManager.ts`）
 - [x] 使用正确的 Codegen 类型（`Double`、`Int32` 等）
 - [x] 事件使用 `BubblingEventHandler`（避免 direct/bubbling 冲突）
 - [x] Codegen 配置已添加到 `package.json`
 
 #### Android 层
 - [x] Turbo Module 实现已创建（继承 `*Spec`）
+- [x] CacheManager Module 已创建并注册
 - [x] Fabric Component ViewManager 已创建（实现 `*Interface`）
 - [x] Fabric Component View 已创建
 - [x] Package 已创建（继承 `TurboReactPackage`）
@@ -1680,8 +1769,9 @@ ls build/generated/ios/react/renderer/components/MyAwesomeSpec/
 
 #### iOS 层
 - [x] Turbo Module 实现已创建（`.h` 和 `.mm`）
+- [x] CacheManager 原生文件已添加到 Xcode 项目
 - [x] Fabric Component 实现已创建（`.h` 和 `.mm`）
-- [ ] **原生文件已添加到 Xcode 项目**（⚠️ 需要手动操作）
+- [x] **原生文件已添加到 Xcode 项目**
 - [x] 文件路径正确（`MyAwesome/Calculator.mm` 等）
 - [x] Pods 已安装（`pod install`）
 - [x] Codegen 文件已生成（`build/generated/ios/`）
@@ -1690,6 +1780,7 @@ ls build/generated/ios/react/renderer/components/MyAwesomeSpec/
 - [x] Android 应用可以成功构建和运行
 - [x] iOS 应用可以成功构建和运行
 - [x] Calculator 模块功能正常
+- [x] CacheManager 模块可通过 Codegen 生成
 - [x] CustomButton 组件功能正常
 - [x] 事件处理正常工作
 - [x] 错误处理正常工作

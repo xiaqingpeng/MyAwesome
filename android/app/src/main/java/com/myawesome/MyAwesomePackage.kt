@@ -12,6 +12,7 @@ class MyAwesomePackage : TurboReactPackage() {
     override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
         return when (name) {
             CalculatorModule.NAME -> CalculatorModule(reactContext)
+            CacheManagerModule.NAME -> CacheManagerModule(reactContext)
             else -> null
         }
     }
@@ -22,6 +23,14 @@ class MyAwesomePackage : TurboReactPackage() {
                 CalculatorModule.NAME to ReactModuleInfo(
                     CalculatorModule.NAME,
                     "CalculatorModule",
+                    false, // canOverrideExistingModule
+                    false, // needsEagerInit
+                    true,  // isCxxModule
+                    true   // isTurboModule
+                ),
+                CacheManagerModule.NAME to ReactModuleInfo(
+                    CacheManagerModule.NAME,
+                    "CacheManagerModule",
                     false, // canOverrideExistingModule
                     false, // needsEagerInit
                     true,  // isCxxModule

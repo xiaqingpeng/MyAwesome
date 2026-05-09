@@ -12,6 +12,7 @@
 		358CBB93CBE6D2EA67B2B564 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C0EBCE802FA6510B002DC55C /* CacheManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE822FA6510B002DC55C /* CacheManager.mm */; };
 		C0EBCE7E2FA6510B002DC55C /* Calculator.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE7B2FA6510B002DC55C /* Calculator.mm */; };
 		C0EBCE7F2FA6510B002DC55C /* CustomButtonView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE7D2FA6510B002DC55C /* CustomButtonView.mm */; };
 /* End PBXBuildFile section */
@@ -26,6 +27,8 @@
 		5DCACB8F33CDC322A6C60F78 /* libPods-MyAwesome.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MyAwesome.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = MyAwesome/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = MyAwesome/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		C0EBCE812FA6510B002DC55C /* CacheManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CacheManager.h; path = MyAwesome/CacheManager.h; sourceTree = "<group>"; };
+		C0EBCE822FA6510B002DC55C /* CacheManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CacheManager.mm; path = MyAwesome/CacheManager.mm; sourceTree = "<group>"; };
 		C0EBCE7A2FA6510B002DC55C /* Calculator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Calculator.h; path = MyAwesome/Calculator.h; sourceTree = "<group>"; };
 		C0EBCE7B2FA6510B002DC55C /* Calculator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = Calculator.mm; path = MyAwesome/Calculator.mm; sourceTree = "<group>"; };
 		C0EBCE7C2FA6510B002DC55C /* CustomButtonView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = CustomButtonView.h; path = MyAwesome/CustomButtonView.h; sourceTree = "<group>"; };
@@ -78,6 +81,8 @@
 			children = (
 				C0EBCE7A2FA6510B002DC55C /* Calculator.h */,
 				C0EBCE7B2FA6510B002DC55C /* Calculator.mm */,
+				C0EBCE812FA6510B002DC55C /* CacheManager.h */,
+				C0EBCE822FA6510B002DC55C /* CacheManager.mm */,
 				C0EBCE7C2FA6510B002DC55C /* CustomButtonView.h */,
 				C0EBCE7D2FA6510B002DC55C /* CustomButtonView.mm */,
 				13B07FAE1A68108700A75B9A /* MyAwesome */,
@@ -201,9 +206,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MyAwesome/Pods-MyAwesome-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MyAwesome/Pods-MyAwesome-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -240,9 +249,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MyAwesome/Pods-MyAwesome-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-MyAwesome/Pods-MyAwesome-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -257,6 +270,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0EBCE7E2FA6510B002DC55C /* Calculator.mm in Sources */,
+				C0EBCE802FA6510B002DC55C /* CacheManager.mm in Sources */,
 				C0EBCE7F2FA6510B002DC55C /* CustomButtonView.mm in Sources */,
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
 			);

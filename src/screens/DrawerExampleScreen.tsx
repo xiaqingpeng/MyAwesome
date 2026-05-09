@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Appearance } from 'react-native';
 import { Circle } from 'react-native-svg';
 import { useAtom, useSetAtom } from 'jotai';
@@ -11,6 +11,35 @@ import {
 } from '../components/icons';
 import { themeModeAtom, themeColorsAtom, systemThemeAtom } from '../store/themeAtoms';
 import type { ThemeMode } from '../store/themeAtoms';
+import CacheManager from '../specs/NativeCacheManager';
+
+const formatCacheSize = (bytes: number | null) => {
+  if (bytes === null) {
+    return '--';
+  }
+
+  if (bytes < 1024) {
+    return `${bytes.toFixed(0)} B`;
+  }
+
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(1)} KB`;
+  }
+
+  if (bytes < 1024 * 1024 * 1024) {
+    return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+  }
+
+  return `${(bytes / 1024 / 1024 / 1024).toFixed(1)} GB`;
+};
+
+const formatCacheUpdatedAt = () => {
+  const now = new Date();
+  const hours = now.getHours().toString().padStart(2, '0');
+  const minutes = now.getMinutes().toString().padStart(2, '0');
+  const seconds = now.getSeconds().toString().padStart(2, '0');
+  return `${hours}:${minutes}:${seconds}`;
+};
 
 // Example screens for the drawer
 export function DrawerHomeScreen() {
@@ -98,6 +127,11 @@ export function DrawerSettingsScreen() {
   const [themeMode, setThemeMode] = useAtom(themeModeAtom);
   const [colors] = useAtom(themeColorsAtom);
   const setSystemTheme = useSetAtom(systemThemeAtom);
+  const [cacheSizeBytes, setCacheSizeBytes] = useState<number | null>(null);
+  const [cacheUpdatedAt, setCacheUpdatedAt] = useState('');
+  const [isCacheLoading, setIsCacheLoading] = useState(false);
+  const [cacheError, setCacheError] = useState('');
+  const [cacheClearedMessage, setCacheClearedMessage] = useState('');
 
   // 监听系统主题变化
   useEffect(() => {
@@ -108,8 +142,69 @@ export function DrawerSettingsScreen() {
     return () => subscription.remove();
   }, [setSystemTheme]);
 
+  useEffect(() => {
+    let isActive = true;
+
+    const refreshCacheSize = async (showLoading = false) => {
+      if (!CacheManager) {
+        setCacheError('当前安装包还未包含缓存原生模块，请重新编译 App');
+        return;
+      }
+
+      try {
+        if (showLoading) {
+          setIsCacheLoading(true);
+        }
+        const size = await CacheManager.getCacheSize();
+        if (isActive) {
+          setCacheSizeBytes(size);
+          setCacheUpdatedAt(formatCacheUpdatedAt());
+          setCacheError('');
+        }
+      } catch {
+        if (isActive) {
+          setCacheError('读取缓存失败，请稍后重试');
+        }
+      } finally {
+        if (isActive && showLoading) {
+          setIsCacheLoading(false);
+        }
+      }
+    };
+
+    refreshCacheSize(true);
+    const timer = setInterval(refreshCacheSize, 5000);
+
+    return () => {
+      isActive = false;
+      clearInterval(timer);
+    };
+  }, []);
+
   const handleThemeModeChange = (mode: ThemeMode) => {
     setThemeMode(mode);
+  };
+
+  const handleClearCache = () => {
+    if (!CacheManager) {
+      setCacheError('当前安装包还未包含缓存原生模块，请重新编译 App');
+      return;
+    }
+
+    setIsCacheLoading(true);
+    CacheManager.clearCache()
+      .then((size) => {
+        setCacheSizeBytes(size);
+        setCacheUpdatedAt(formatCacheUpdatedAt());
+        setCacheClearedMessage('缓存已清空');
+        setCacheError('');
+      })
+      .catch(() => {
+        setCacheError('清空缓存失败，请稍后重试');
+      })
+      .finally(() => {
+        setIsCacheLoading(false);
+      });
   };
 
   const getThemeModeLabel = () => {
@@ -252,6 +347,59 @@ export function DrawerSettingsScreen() {
               <Text style={[styles.settingValue, { color: colors.primary }]}>公开</Text>
             </View>
           </View>
+        </View>
+
+        {/* 缓存管理 */}
+        <View style={styles.sectionContainer}>
+          <View style={styles.sectionHeader}>
+            <Text style={[styles.sectionTitle, styles.sectionTitleInline, { color: colors.text }]}>缓存</Text>
+            <Text style={[styles.cacheSummary, { color: colors.textSecondary }]}>
+              {isCacheLoading ? '读取中...' : `实时 ${formatCacheSize(cacheSizeBytes)}`}
+            </Text>
+          </View>
+
+          <View style={[styles.cacheCard, { backgroundColor: colors.surface }]}>
+            <View style={[styles.cacheItem, { borderBottomColor: colors.separator }]}>
+              <View style={styles.cacheItemContent}>
+                <Text style={[styles.cacheName, { color: colors.text }]}>当前 App 缓存</Text>
+                <Text style={[styles.cacheDescription, { color: colors.textSecondary }]}>
+                  实时统计手机系统分配给本应用的缓存目录
+                </Text>
+                <Text style={[styles.cacheUpdatedAt, { color: colors.textTertiary }]}>
+                  {cacheUpdatedAt ? `更新于 ${cacheUpdatedAt}` : '等待读取'}
+                </Text>
+              </View>
+              <Text style={[styles.cacheSize, { color: colors.primary }]}>
+                {formatCacheSize(cacheSizeBytes)}
+              </Text>
+            </View>
+            <View style={styles.cacheNotice}>
+              <Text style={[styles.cacheNoticeText, { color: colors.textSecondary }]}>
+                Android 统计 cacheDir、codeCacheDir 和 externalCacheDir；iOS 统计 Library/Caches 和 tmp。
+              </Text>
+            </View>
+          </View>
+
+          <TouchableOpacity
+            style={[
+              styles.clearCacheButton,
+              { backgroundColor: isCacheLoading ? colors.placeholder : colors.error },
+            ]}
+            activeOpacity={0.8}
+            disabled={isCacheLoading}
+            onPress={handleClearCache}
+          >
+            <Text style={styles.clearCacheButtonText}>
+              {isCacheLoading ? '处理中...' : '清空缓存'}
+            </Text>
+          </TouchableOpacity>
+
+          {cacheError ? (
+            <Text style={[styles.cacheMessage, { color: colors.error }]}>{cacheError}</Text>
+          ) : null}
+          {cacheClearedMessage ? (
+            <Text style={[styles.cacheMessage, { color: colors.success }]}>{cacheClearedMessage}</Text>
+          ) : null}
         </View>
       </View>
     </ScrollView>
@@ -555,6 +703,91 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     marginBottom: 12,
     paddingHorizontal: 4,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  sectionTitleInline: {
+    marginBottom: 0,
+  },
+  cacheSummary: {
+    fontSize: 14,
+  },
+  cacheCard: {
+    borderRadius: 12,
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  cacheItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+  },
+  cacheItemContent: {
+    flex: 1,
+    marginRight: 12,
+  },
+  cacheName: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 6,
+  },
+  cacheDescription: {
+    fontSize: 14,
+    lineHeight: 20,
+    marginBottom: 4,
+  },
+  cacheUpdatedAt: {
+    fontSize: 12,
+  },
+  cacheSize: {
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  emptyCache: {
+    alignItems: 'center',
+    padding: 24,
+  },
+  emptyCacheTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  emptyCacheText: {
+    fontSize: 14,
+    lineHeight: 20,
+    textAlign: 'center',
+  },
+  cacheNotice: {
+    padding: 16,
+  },
+  cacheNoticeText: {
+    fontSize: 13,
+    lineHeight: 19,
+  },
+  clearCacheButton: {
+    alignItems: 'center',
+    borderRadius: 12,
+    marginTop: 16,
+    paddingVertical: 14,
+  },
+  clearCacheButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  cacheMessage: {
+    fontSize: 14,
+    marginTop: 10,
+    textAlign: 'center',
   },
   themeOptionsContainer: {
     flexDirection: 'row',

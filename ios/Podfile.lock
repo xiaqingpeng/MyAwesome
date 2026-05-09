@@ -2353,7 +2353,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBLazyVector: 26fd21c75314e101f280d401e97f27d54f3f7064
-  hermes-engine: e5339ff56423aea61a9cd0f73002826731e049a4
+  hermes-engine: 3dc1ff1155762ec2e830699ca9c239028d6a2cf6
   RCTDeprecation: c7a2768f905d76ca6d2cfefb26e4349eacbdfca3
   RCTRequired: 5e502c3553cfbed090a991c444448da452fb752e
   RCTSwiftUI: 5ce3ccbdc58b78cc4ebbaace01709ec22d58e131

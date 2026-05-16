@@ -21,6 +21,8 @@ import ExploreScreen from '../screens/ExploreScreen';
 import NotificationsScreen from '../screens/NotificationsScreen';
 import NetworkDemoScreen from '../screens/NetworkDemoScreen';
 import CodegenDemoScreen from '../screens/CodegenDemoScreen';
+import BleCodegenScreen from '../screens/BleCodegenScreen';
+import NewArchitectureExamplesScreen from '../screens/NewArchitectureExamplesScreen';
 import type { TopTabParamList } from './types';
 
 const TopTab = createMaterialTopTabNavigator<TopTabParamList>();
@@ -91,6 +93,20 @@ export function TopTabsNavigator() {
           component={CodegenDemoScreen}
           options={{
             tabBarLabel: 'Codegen',
+          }}
+        />
+        <TopTab.Screen
+          name="BleCodegen"
+          component={BleCodegenScreen}
+          options={{
+            tabBarLabel: 'BLE Codegen',
+          }}
+        />
+        <TopTab.Screen
+          name="NewArchitecture"
+          component={NewArchitectureExamplesScreen}
+          options={{
+            tabBarLabel: 'RN 新架构',
           }}
         />
         <TopTab.Screen

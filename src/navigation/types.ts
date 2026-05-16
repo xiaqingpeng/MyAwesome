@@ -16,5 +16,7 @@ export type TopTabParamList = {
   Explore: undefined;
   Network: undefined;
   Codegen: undefined;
+  BleCodegen: undefined;
+  NewArchitecture: undefined;
   Notifications: undefined;
 };

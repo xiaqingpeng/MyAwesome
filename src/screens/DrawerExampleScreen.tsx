@@ -248,6 +248,7 @@ export function DrawerSettingsScreen() {
               style={[
                 styles.themeOption,
                 { backgroundColor: colors.surface, borderColor: colors.border },
+                // eslint-disable-next-line react-native/no-inline-styles
                 themeMode === 'light' && { borderColor: colors.primary, borderWidth: 2 },
               ]}
               onPress={() => handleThemeModeChange('light')}

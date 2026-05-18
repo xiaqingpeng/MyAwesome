@@ -14,6 +14,7 @@ class MyAwesomePackage : TurboReactPackage() {
             CalculatorModule.NAME -> CalculatorModule(reactContext)
             CacheManagerModule.NAME -> CacheManagerModule(reactContext)
             VersionInfoModule.NAME -> VersionInfoModule(reactContext)
+            BleTransferModule.NAME -> BleTransferModule(reactContext)
             else -> null
         }
     }
@@ -40,6 +41,14 @@ class MyAwesomePackage : TurboReactPackage() {
                 VersionInfoModule.NAME to ReactModuleInfo(
                     VersionInfoModule.NAME,
                     "VersionInfoModule",
+                    false, // canOverrideExistingModule
+                    false, // needsEagerInit
+                    true,  // isCxxModule
+                    true   // isTurboModule
+                ),
+                BleTransferModule.NAME to ReactModuleInfo(
+                    BleTransferModule.NAME,
+                    "BleTransferModule",
                     false, // canOverrideExistingModule
                     false, // needsEagerInit
                     true,  // isCxxModule

@@ -33,8 +33,18 @@
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>Used to connect to the Metro development server on your local network.</string>
+	<key>NSBonjourServices</key>
+	<array>
+		<string>_http._tcp</string>
+	</array>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>需要蓝牙权限来连接本地 BLE 数据源并传输数据。</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>需要蓝牙权限来连接本地 BLE 数据源并传输数据。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>需要定位权限来扫描附近的 BLE 设备。</string>
 	<key>RCTNewArchEnabled</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

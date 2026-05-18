@@ -1,0 +1,19 @@
+{
+  "name": "ble-gatt-source",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build:bleno-mac": "node scripts/build-bleno-mac.js",
+    "check:bleno": "node -e \"require('@abandonware/bleno'); console.log('bleno ok')\"",
+    "uart": "pnpm build:bleno-mac && sudo node peripheral.js --profile uart",
+    "scale": "pnpm build:bleno-mac && sudo node peripheral.js --profile scale",
+    "blood-pressure": "pnpm build:bleno-mac && sudo node peripheral.js --profile blood-pressure",
+    "ebike": "pnpm build:bleno-mac && sudo node peripheral.js --profile ebike"
+  },
+  "dependencies": {
+    "@abandonware/bleno": "^0.6.2"
+  },
+  "devDependencies": {
+    "node-gyp": "^12.3.0"
+  }
+}

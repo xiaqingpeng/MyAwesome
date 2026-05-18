@@ -16,6 +16,8 @@
 		C0EBCE7F2FA6510B002DC55C /* CustomButtonView.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE7D2FA6510B002DC55C /* CustomButtonView.mm */; };
 		C0EBCE802FA6510B002DC55C /* CacheManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE822FA6510B002DC55C /* CacheManager.mm */; };
 		C0EBCE832FA6510B002DC55C /* VersionInfo.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE852FA6510B002DC55C /* VersionInfo.mm */; };
+		C0EBCE862FA6510B002DC55C /* BleTransfer.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0EBCE882FA6510B002DC55C /* BleTransfer.mm */; };
+		C0EBCE892FA6510B002DC55C /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0EBCE8A2FA6510B002DC55C /* CoreBluetooth.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,9 @@
 		C0EBCE822FA6510B002DC55C /* CacheManager.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = CacheManager.mm; path = MyAwesome/CacheManager.mm; sourceTree = "<group>"; };
 		C0EBCE842FA6510B002DC55C /* VersionInfo.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = VersionInfo.h; path = MyAwesome/VersionInfo.h; sourceTree = "<group>"; };
 		C0EBCE852FA6510B002DC55C /* VersionInfo.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = VersionInfo.mm; path = MyAwesome/VersionInfo.mm; sourceTree = "<group>"; };
+		C0EBCE872FA6510B002DC55C /* BleTransfer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = BleTransfer.h; path = MyAwesome/BleTransfer.h; sourceTree = "<group>"; };
+		C0EBCE882FA6510B002DC55C /* BleTransfer.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = BleTransfer.mm; path = MyAwesome/BleTransfer.mm; sourceTree = "<group>"; };
+		C0EBCE8A2FA6510B002DC55C /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -44,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C0EBCE892FA6510B002DC55C /* CoreBluetooth.framework in Frameworks */,
 				0C80B921A6F3F58F76C31292 /* libPods-MyAwesome.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,6 +72,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C0EBCE8A2FA6510B002DC55C /* CoreBluetooth.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				5DCACB8F33CDC322A6C60F78 /* libPods-MyAwesome.a */,
 			);
@@ -84,6 +91,8 @@
 			children = (
 				C0EBCE842FA6510B002DC55C /* VersionInfo.h */,
 				C0EBCE852FA6510B002DC55C /* VersionInfo.mm */,
+				C0EBCE872FA6510B002DC55C /* BleTransfer.h */,
+				C0EBCE882FA6510B002DC55C /* BleTransfer.mm */,
 				C0EBCE7A2FA6510B002DC55C /* Calculator.h */,
 				C0EBCE7B2FA6510B002DC55C /* Calculator.mm */,
 				C0EBCE812FA6510B002DC55C /* CacheManager.h */,
@@ -275,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0EBCE832FA6510B002DC55C /* VersionInfo.mm in Sources */,
+				C0EBCE862FA6510B002DC55C /* BleTransfer.mm in Sources */,
 				C0EBCE7E2FA6510B002DC55C /* Calculator.mm in Sources */,
 				C0EBCE802FA6510B002DC55C /* CacheManager.mm in Sources */,
 				C0EBCE7F2FA6510B002DC55C /* CustomButtonView.mm in Sources */,
@@ -306,7 +316,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.qingpengxia.MyAwesome;
 				PRODUCT_NAME = MyAwesome;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -336,7 +346,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.qingpengxia.MyAwesome;
 				PRODUCT_NAME = MyAwesome;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SWIFT_VERSION = 5.0;
